@@ -39,11 +39,11 @@ export class AppComponent implements OnInit {
   onSave() {
     if (this.form.valid) {
       const employeeData: Employee = { ...this.form.value };
-      
+
       if (this.editingEmployee) {
         // Ensure empId is preserved when updating
         employeeData.empId = this.editingEmployee.empId;
-        
+
         // Update existing employee
         this.employeeService.update(employeeData).subscribe({
           next: () => {

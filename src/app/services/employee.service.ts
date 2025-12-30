@@ -12,18 +12,18 @@ export class EmployeeService {
     try {
       // Get existing employees from storage
       const existingEmployees = this.getFromStorage();
-      
+
       // Add ID if not present
       if (!employee.empId) {
         employee.empId = this.generateId(existingEmployees);
       }
-      
+
       // Add the new employee to the array
       existingEmployees.push(employee);
-      
+
       // Save the entire updated array back to localStorage
       localStorage.setItem(this.key, JSON.stringify(existingEmployees));
-      
+
       return of(employee);
     } catch (error) {
       console.error('Error saving to localStorage', error);
@@ -44,10 +44,10 @@ export class EmployeeService {
   update(employee: Employee): Observable<Employee> {
     try {
       const existingEmployees = this.getFromStorage();
-      
+
       // Find the employee by empId
       const index = existingEmployees.findIndex(emp => emp.empId === employee.empId);
-      
+
       if (index !== -1) {
         // Update the employee in the array
         existingEmployees[index] = { ...employee };
@@ -66,7 +66,7 @@ export class EmployeeService {
     try {
       const existingEmployees = this.getFromStorage();
       const index = existingEmployees.findIndex(emp => emp.empId === id);
-      
+
       if (index !== -1) {
         existingEmployees.splice(index, 1);
         localStorage.setItem(this.key, JSON.stringify(existingEmployees));
