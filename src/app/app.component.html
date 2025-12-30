@@ -9,13 +9,45 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                  <th>No</th>
-                  <th>Name</th>
-                  <th>Contact</th>
-                  <th>Email</th>
-
+                <th>No</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Actions</th>
               </tr>
             </thead>
+            <tbody>
+              @for (employee of allEmployees; track employee.empId || $index) {
+              <tr>
+                <td>{{ employee.empId }}</td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.city }}</td>
+                <td>{{ employee.state }}</td>
+                <td>{{ employee.contact }}</td>
+                <td>{{ employee.email }}</td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-primary me-1"
+                    (click)="onEdit(employee)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="onDelete(employee.empId!)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="7" class="text-center">No employees found</td>
+              </tr>
+              }
+            </tbody>
           </table>
         </div>
       </div>
@@ -24,43 +56,112 @@
   <div class="col-4">
     <div class="card">
       <div class="card-header bg-success">
-         New Employee
+        {{ editingEmployee ? "Edit Employee" : "New Employee" }}
       </div>
       <div class="card-body">
-        <form action="" [formGroup]="form">
-
+        <form [formGroup]="form" (ngSubmit)="onSave()">
           <div class="row">
             <div class="col-12">
-              <label for="">Name</label>
-              <input type="text" formControlName="name" class="form-control">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+              />
+              @if (form.get('name')?.invalid && form.get('name')?.touched) {
+              <div class="text-danger">Name is required</div>
+              }
             </div>
             <div class="col-6">
-              <label for="">Email</label>
-              <input type="text" formControlName="email" class="form-control">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+              />
+              @if (form.get('email')?.invalid && form.get('email')?.touched) {
+              <div class="text-danger">Valid email is required</div>
+              }
             </div>
             <div class="col-6">
-              <label for="">City</label>
-              <input type="text" formControlName="city" class="form-control">
+              <label for="city">City</label>
+              <input
+                type="text"
+                id="city"
+                formControlName="city"
+                class="form-control"
+              />
+              @if (form.get('city')?.invalid && form.get('city')?.touched) {
+              <div class="text-danger">City is required</div>
+              }
             </div>
             <div class="col-6">
-              <label for="">State</label>
-              <input type="text" formControlName="state" class="form-control">
+              <label for="state">State</label>
+              <input
+                type="text"
+                id="state"
+                formControlName="state"
+                class="form-control"
+              />
+              @if (form.get('state')?.invalid && form.get('state')?.touched) {
+              <div class="text-danger">State is required</div>
+              }
+            </div>
+            <div class="col-6">
+              <label for="contact">Contact</label>
+              <input
+                type="text"
+                id="contact"
+                formControlName="contact"
+                class="form-control"
+              />
+              @if (form.get('contact')?.invalid && form.get('contact')?.touched)
+              {
+              <div class="text-danger">Valid contact number is required</div>
+              }
             </div>
             <div class="col-12">
-              <label for="">Adresse</label>
-              <textarea formControlName="adresse" class="form-control"></textarea>
+              <label for="adresse">Adresse</label>
+              <textarea
+                id="adresse"
+                formControlName="adresse"
+                class="form-control"
+              ></textarea>
             </div>
             <div class="col-6">
-              <label for="">Pin code</label>
-              <input type="text" formControlName="pinCode" class="form-control">
+              <label for="pinCode">Pin code</label>
+              <input
+                type="text"
+                id="pinCode"
+                formControlName="pinCode"
+                class="form-control"
+              />
+              @if (form.get('pinCode')?.invalid && form.get('pinCode')?.touched)
+              {
+              <div class="text-danger">Pin code is required</div>
+              }
             </div>
           </div>
           <div class="row pt-2">
             <div class="col-6 text-center">
-              <button class="btn btn-secondary" (click)="reset()">Reset</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="resetForm()"
+              >
+                Reset
+              </button>
             </div>
             <div class="col-6 text-center">
-              <button class="btn btn-success" (click)="onSave()">Save Employee</button>
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="form.invalid"
+              >
+                {{ editingEmployee ? "Update" : "Save" }} Employee
+              </button>
             </div>
           </div>
         </form>
